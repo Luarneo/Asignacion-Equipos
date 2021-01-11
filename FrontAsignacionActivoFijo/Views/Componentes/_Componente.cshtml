@@ -1,0 +1,114 @@
+﻿@model  FrontAsignacionActivoFijo.Models.ComponentesViewModel
+
+@using (Html.BeginCollectionItem("ListaComponentes"))
+{
+
+    <div class="ItemComponente  col-md-12">
+        <div class="row"><label>&nbsp; </label></div>
+
+        <fieldset class="col-md-12" style=" border: 1px solid gray; border-radius: 15px">
+            @*<legend>Componente</legend>*@
+
+            <div class="row col-md-2 pull-right">
+
+                <div class="form-group col-md-1 pull-right">
+
+                    <a href="#" class="BorraElemento" style="border-radius: 100%; color: red; font-size:30px; text-decoration:none">X</a>
+
+                </div>
+            </div>
+
+            <div class="row col-md-12">
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label" })
+
+                    @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.Marca, htmlAttributes: new { @class = "control-label" })
+
+                    @Html.EditorFor(model => model.Marca, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Marca, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.Modelo, htmlAttributes: new { @class = "control-label" })
+
+                    @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Modelo, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.Serie, htmlAttributes: new { @class = "control-label" })
+
+                    @Html.EditorFor(model => model.Serie, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Serie, "", new { @class = "text-danger" })
+
+                </div>
+
+            </div>
+
+
+            <div class="row col-md-12">
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.Procesador, htmlAttributes: new { @class = "control-label" })
+
+                    @Html.EditorFor(model => model.Procesador, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Procesador, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.DiscoDuro, htmlAttributes: new { @class = "control-label" })
+
+                    @Html.EditorFor(model => model.DiscoDuro, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DiscoDuro, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.Ram, htmlAttributes: new { @class = "control-label" })
+
+                    @Html.EditorFor(model => model.Ram, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Ram, "", new { @class = "text-danger" })
+
+                </div>
+
+            </div>
+
+
+            <div class="row col-md-12">
+
+
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.Anotaciones, htmlAttributes: new { @class = "control-label" })
+
+                    @Html.TextAreaFor(model => model.Anotaciones, new { @class = "form-control ", @cols = 30, @rows = 3 })
+                    @Html.ValidationMessageFor(model => model.Anotaciones, "", new { @class = "text-danger" })
+
+                </div>
+
+
+            </div>
+
+            <div class="row"><label>&nbsp; </label></div>
+
+            <div class="row"><label>&nbsp; </label></div>
+
+        </fieldset>
+
+    </div>
+
+}
+
+
+
+
+

@@ -1,0 +1,116 @@
+﻿@model FrontAsignacionActivoFijo.Models.GuardarComponentesViewModel
+
+@using (Html.BeginForm("AgregarComponentes","Componentes", FormMethod.Post, new { @id = "FrmDatosComponentes" }))
+{
+    <div class="row"><label>&nbsp; </label></div>
+    <div class="row"><label>&nbsp; </label></div>
+    <div class="row"><label>&nbsp; </label></div>
+
+    <div class="container">
+
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+        <div class="row">
+            <div class="form-group col-md-2">
+                @Html.Label("N° Serie / IMEI", htmlAttributes: new { @class = "control-label" })
+
+                @Html.Editor("SActivo", new { htmlAttributes = new { @class = "form-control col-md-2", @disabled = "disabled" } })
+            </div>
+
+
+
+            <div class="form-group col-md-2 hide">
+
+                @Html.EditorFor(model => model.IdActivo, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.IdDelActivo } })
+
+            </div>
+
+
+            <div class="form-group col-md-2 pull-right">
+                @*<input type="button" id="BtnAgregar" value="Agregar" class="btn-info form-control col-md-2" />*@
+                <button type="button" class="btn-info form-control col-md-2" id="BtnAgregar">
+                    <i class="glyphicon glyphicon-plus"></i>  Agregar
+                </button>
+            </div>
+
+        </div>
+
+
+
+        <div class="row col-md-12" id="DivSeccionesComponentes">
+
+
+
+
+            @Html.Partial("_Componente")
+
+
+
+        </div>
+
+
+
+        <div class="row"><label>&nbsp; </label></div>
+
+        <div class="row"><label>&nbsp; </label></div>
+
+
+        <div class="row">
+
+            <div class="row"><label>&nbsp; </label></div>
+
+            <div class="col-md-offset-3 col-md-10">
+                <div class="row col-md-2">   </div>
+
+                <div class="row col-md-8">
+                    @*<input type="submit" value="Guardar" class="btn btn-success col-md-5" id="BtnGuardarComponentes" />*@
+                    <button type="submit" class="btn btn-success col-md-5" id="BtnGuardarComponentes">
+                        <i class="glyphicon glyphicon-floppy-disk"></i> &nbsp;&nbsp;  Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 pull-right">
+                @*<input type="button" value="Regresar" class="btn btn-danger" onclick=" />*@
+                @Html.ActionLink("Cancelar", "Index", "Componentes", new { @class = "btn btn-danger" })
+            </div>
+        </div>
+
+    </div>
+
+}
+
+
+
+@section Scripts
+    {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+    <script type="text/javascript">
+
+
+            $('#BtnAgregar').click(function () {
+
+              
+                $.post('/Componentes/AgregandoComponente',
+                    function (partialView) {
+                        $('#DivSeccionesComponentes').append(partialView);
+                        $("#FrmDatosComponentes").removeData('validator');
+                        $("#FrmDatosComponentes").removeData('unobtrusiveValidation');
+                        $.validator.unobtrusive.parse($("#FrmDatosComponentes"));
+                    },
+                    "html"
+                );
+            });
+        
+    </script>
+
+    <script src="~/Scripts/JSComponentes.js"></script>
+}

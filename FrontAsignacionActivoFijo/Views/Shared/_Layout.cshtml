@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Activos Fijos</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Ubicaciones", "Index", "Ubicaciones")</li>
+                    <li>@Html.ActionLink("Activo", "NuevoActivo", "Activo")</li>
+                    <li>@Html.ActionLink("Asignación", "Index", "Asignacion")</li>
+                    <li>@Html.ActionLink("Componentes", "Index", "Componentes")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div id="AlertaDiv">
+        @if (TempData["Mensaje"] != null)
+        {
+            var confirmacion = TempData["Mensaje"] as KeyValuePair<string, string>?;
+            @Html.Partial("_Alerta", new KeyValuePair<string, string>(confirmacion.Value.Key, confirmacion.Value.Value))
+        }
+    </div>
+    <div id="AlertaDiv">
+        @if (TempData["Mensaje2"] != null)
+        {
+            var confirmacion = TempData["Mensaje2"] as KeyValuePair<string, string>?;
+            @Html.Partial("_Alerta", new KeyValuePair<string, string>(confirmacion.Value.Key, confirmacion.Value.Value))
+        }
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - E-Contact Professional Services</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
