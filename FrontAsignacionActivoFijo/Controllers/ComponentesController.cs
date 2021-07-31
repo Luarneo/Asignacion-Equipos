@@ -34,12 +34,12 @@ namespace FrontAsignacionActivoFijo.Controllers
 
 
         // GET: Componentes
-        [Authorize]
+        
         public async Task<ActionResult> Index()
         {
             List<CatalogosViewModel> ListaEmpresas = new List<CatalogosViewModel>();
-            ListaEmpresas.Add(new CatalogosViewModel() { Id = 1, Nombre = "ECONTACT" });
-            ListaEmpresas.Add(new CatalogosViewModel() { Id = 2, Nombre = "SERVINEXT" });
+            ListaEmpresas.Add(new CatalogosViewModel() { Id = 1, Nombre = "SERVICIOS INTEGRALES S.A" });
+            ListaEmpresas.Add(new CatalogosViewModel() { Id = 2, Nombre = "NEOTEC" });
 
             ViewBag.ListaEmpresas = ListaEmpresas;
             ViewBag.ListaUbicaciones = await _ServicioUbicaciones.ObtenerUbicaciones(2);

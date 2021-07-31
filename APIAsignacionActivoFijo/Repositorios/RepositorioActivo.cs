@@ -1,6 +1,8 @@
 ﻿using APIAsignacionActivoFijo.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -10,126 +12,79 @@ namespace APIAsignacionActivoFijo.Repositorios
     public class RepositorioActivo : IRepositorioActivo
     {
 
-        public async Task<List<ActivoVista>> ObtenerActivos(string Empresa, long UbicacionId)
+        SqlConnection conexion = new SqlConnection("Data Source =.; initial catalog = Asignacion_Equipos; User ID = user_asig_eq; Password=asigeq2507;");
+
+        public List<ActivoVista> ObtenerActivos(string Empresa, long UbicacionId)
         {
+            
+
             List<ActivoVista> ListaFinal = new List<ActivoVista>();
+            
+            
+            string CadSP = "[dbo].[SP_OBTENER_ACTIVOS]";
+            SqlCommand cmd = new SqlCommand(CadSP, conexion);
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            ACTIVOS_FIJOS.Datos respuesta = new ACTIVOS_FIJOS.Datos();
+            cmd.Parameters.AddWithValue("@Empresa", Empresa);
+            cmd.Parameters.AddWithValue("@IdUbicacion", UbicacionId);
 
-            var ListaRespuesta = respuesta.ObtenerActivos(Empresa, UbicacionId);
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
 
-            foreach (var i in ListaRespuesta)
+            for (int i = 0; i < dt.Rows.Count; i++)
             {
+                ActivoVista ElemActivo = new ActivoVista();
 
-                
-                ListaFinal.Add(new ActivoVista()
-                {
-                    DiscoDuroPlan = i.DiscoDuro,
-                    Empresa = i.Empresa,
-                    IdActivo = Convert.ToInt32(i.ActivoID),
-                    IdArticulo = Convert.ToInt32(i.ArticuloID),
-                    IdDepartamento = i.DepartamentoID,
-                    IdUbicacion = Convert.ToInt32(i.UbicacionID),
-                    Marca = i.Marca,
-                    ModeloVersion = i.Modelo,
-                    NombreArticulo = i.Articulo,
-                    NombreClasificacion = i.Clasificacion,
-                    NumEmpleado = i.Colaborador,                    
-                    ProcesadorSim = i.Procesador,
-                    RamLinea = i.Ram,
-                    SerieImei = i.NumeroSerie,
-                    Observaciones = i.Descripcion,
-                    FechaAsignacion = i.Fecha
+                ElemActivo.IdActivo = Convert.ToInt32(dt.Rows[i]["Id"]);
+                ElemActivo.Empresa = dt.Rows[i]["Empresa"].ToString();
+                ElemActivo.IdDepartamento = Convert.ToInt32(dt.Rows[i]["IdDepartamento"]);
+                ElemActivo.IdArticulo = Convert.ToInt32(dt.Rows[i]["IdArticulo"]);
+                ElemActivo.IdUbicacion = Convert.ToInt32(dt.Rows[i]["IdUbicacion"]);
+                ElemActivo.Marca = dt.Rows[i]["Marca"].ToString();
+                ElemActivo.ModeloVersion = dt.Rows[i]["Modelo"].ToString();
+                ElemActivo.ProcesadorSim = dt.Rows[i]["Procesador"].ToString();
+                ElemActivo.DiscoDuroPlan = dt.Rows[i]["DiscoDuro"].ToString();
+                ElemActivo.RamLinea = dt.Rows[i]["Ram"].ToString();
+                ElemActivo.SerieImei = dt.Rows[i]["NumeroSerie"].ToString();
+                ElemActivo.Observaciones = dt.Rows[i]["Descripcion"].ToString();
 
-                });
+                ListaFinal.Add(ElemActivo);
+
             }
-
-
-
-            //if (Empresa == "ECONTACT" && UbicacionId == 1)
-            //{
-            //    ListaFinal.Add(new ActivoVista()
-            //    {
-            //        DiscoDuroPlan = "1 TB",
-            //        IdActivo = 1,
-            //        IdArea = 1,
-            //        IdArticulo = 2,
-            //        IdClasificacion = 1,
-            //        IdDepartamento = 1,
-            //        Empresa = "ECONTACT",
-            //        IdUbicacion = 1,
-            //        Marca = "DELL",
-            //        ModeloVersion = "6430u",
-            //        ProcesadorSim = "CORE i7",
-            //        RamLinea = "8 Gb",
-            //        SerieImei = "MX78675556",                    
-            //        NombreArticulo = "LAPTOP",
-            //        NombreClasificacion = "EQ. COMPUTO",
-            //        NumEmpleado = "E000001",
-            //        Observaciones = "NINGUNA"
-
-            //    });
-
-            //    ListaFinal.Add(new ActivoVista()
-            //    {
-            //        DiscoDuroPlan = "POSTPAGO",
-            //        IdActivo = 2,
-            //        IdArea = 1,
-            //        IdArticulo = 3,
-            //        IdClasificacion = 2,
-            //        IdDepartamento = 2,
-            //        Empresa = "ECONTACT",
-            //        IdUbicacion = 1,
-            //        Marca = "SAMSUNG",
-            //        ModeloVersion = "S5830",
-            //        ProcesadorSim = "4G LTE",
-            //        RamLinea = "SMARTPHONE",
-            //        SerieImei = "362587635240982",
-            //        NombreArticulo = "CELULAR",
-            //        NombreClasificacion = "EQ. COMUNICACION",
-            //        NumEmpleado = "E000001",
-            //        Observaciones = "NINGUNA"
-
-            //    });
-
-            //}
 
             return ListaFinal;
         }
 
-        public async Task<KeyValuePair<bool, string>> GuardarActivo(Activo NuevoActivo)
+        public KeyValuePair<bool, string> GuardarActivo(Activo NuevoActivo)
         {
             try
             {
 
-                ACTIVOS_FIJOS.Datos Data =  new ACTIVOS_FIJOS.Datos();
-             
-                var Respuesta = Data.GuardarActivo(new ACTIVOS_FIJOS.Activo()
-                {
-                    ArticuloID = NuevoActivo.IdArticulo,
-                    DepartamentoID = NuevoActivo.IdDepartamento,
-                    DiscoDuro = NuevoActivo.DiscoDuroPlan,
-                    Empresa = NuevoActivo.Empresa,
-                    Marca = NuevoActivo.Marca,
-                    Modelo = NuevoActivo.ModeloVersion,
-                    NumeroSerie = NuevoActivo.SerieImei,
-                    Procesador = NuevoActivo.ProcesadorSim,
-                    Ram = NuevoActivo.RamLinea,
-                    UbicacionID = NuevoActivo.IdUbicacion,
-                    Descripcion = NuevoActivo.Observaciones
-                                 
-                    
-                });
+                string CadSP = "dbo.[SP_GUARDAR_ACTIVO]";
+
+                SqlCommand cmd = new SqlCommand(CadSP, conexion);
 
 
-                if (Respuesta.Bandera == 1)
-                {
-                    return new KeyValuePair<bool, string>(true, "Operacion Exitosa");
-                }
-                else
-                {
-                    return new KeyValuePair<bool, string>(true, Respuesta.Mensaje);
-                }
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@Empresa", NuevoActivo.Empresa);
+                cmd.Parameters.AddWithValue("@IdDepartamento", NuevoActivo.IdDepartamento);
+                cmd.Parameters.AddWithValue("@IdArticulo", NuevoActivo.IdArticulo);
+                cmd.Parameters.AddWithValue("@IdUbicacion", NuevoActivo.IdUbicacion);
+                cmd.Parameters.AddWithValue("@Marca", NuevoActivo.Marca);
+                cmd.Parameters.AddWithValue("@Modelo", NuevoActivo.ModeloVersion);
+                cmd.Parameters.AddWithValue("@Procesador", NuevoActivo.ProcesadorSim);
+                cmd.Parameters.AddWithValue("@DiscoDuro", NuevoActivo.DiscoDuroPlan);
+                cmd.Parameters.AddWithValue("@Ram", NuevoActivo.RamLinea);
+                cmd.Parameters.AddWithValue("@NumeroSerie", NuevoActivo.SerieImei);
+                cmd.Parameters.AddWithValue("@Descripcion", NuevoActivo.Observaciones);
+
+                conexion.Open();
+                cmd.ExecuteNonQuery();
+                conexion.Close();
+
+                return new KeyValuePair<bool, string>(true, "Operación Exitosa");
 
             }
             catch (Exception e)
@@ -142,54 +97,35 @@ namespace APIAsignacionActivoFijo.Repositorios
             
         
 
-        public async Task<ActivoVista> ObtenerActivo(int ActivoID)
+        public ActivoVista ObtenerActivo(int ActivoID)
         {
-
             ActivoVista ActivoFinal = new ActivoVista();
+            string CadSP = "[dbo].[SP_OBTENER_ACTIVO]";
 
-            ACTIVOS_FIJOS.Datos respuesta = new ACTIVOS_FIJOS.Datos();
+            SqlCommand cmd = new SqlCommand(CadSP, conexion);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@ActivoId", ActivoID);
 
-            var RespuestaObj = respuesta.ObtenerActivo(Convert.ToInt64(ActivoID));
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
 
 
-            ActivoFinal.DiscoDuroPlan = RespuestaObj.DiscoDuro;
-            ActivoFinal.IdActivo = Convert.ToInt32(RespuestaObj.ActivoID);
-            //ActivoFinal.IdArea = RespuestaObj.ar
-            ActivoFinal.IdArticulo = Convert.ToInt32(RespuestaObj.ArticuloID);
-            //ActivoFinal.IdClasificacion = RespuestaObj.id
-            ActivoFinal.IdDepartamento = RespuestaObj.DepartamentoID;
-            ActivoFinal.Empresa = RespuestaObj.Empresa;
-            ActivoFinal.IdUbicacion = Convert.ToInt32(RespuestaObj.UbicacionID);
-            ActivoFinal.Marca = RespuestaObj.Marca;
-            ActivoFinal.ModeloVersion = RespuestaObj.Modelo;
-            ActivoFinal.ProcesadorSim = RespuestaObj.Procesador;
-            ActivoFinal.RamLinea = RespuestaObj.Ram;
-            ActivoFinal.SerieImei = RespuestaObj.NumeroSerie;
-            ActivoFinal.NombreArticulo = RespuestaObj.Articulo;
-            ActivoFinal.NombreClasificacion = RespuestaObj.Clasificacion;
-            ActivoFinal.NumEmpleado = RespuestaObj.Colaborador;
-            ActivoFinal.FechaAsignacion = RespuestaObj.Fecha;
+            ActivoVista ElemActivo = new ActivoVista();
 
-            //if (IdActivo == 1)
-            //{
-            //    ActivoFinal.DiscoDuroPlan = "1 TB";
-            //    ActivoFinal.IdActivo = 1;
-            //    ActivoFinal.IdArea = 1;
-            //    ActivoFinal.IdArticulo = 2;
-            //    ActivoFinal.IdClasificacion = 1;
-            //    ActivoFinal.IdDepartamento = 1;
-            //    ActivoFinal.Empresa = "ECONTACT";
-            //    ActivoFinal.IdUbicacion = 1;
-            //    ActivoFinal.Marca = "DELL";
-            //    ActivoFinal.ModeloVersion = "6430u";
-            //    ActivoFinal.ProcesadorSim = "CORE i7";
-            //    ActivoFinal.RamLinea = "8 Gb";
-            //    ActivoFinal.SerieImei = "MX78675556";
-            //    ActivoFinal.NombreArticulo = "Lap Top";
-            //    ActivoFinal.NombreClasificacion = "Computadoras";
-            //    ActivoFinal.NumEmpleado = "E000001";
-            //}
-
+            ElemActivo.IdActivo = Convert.ToInt32(dt.Rows[0]["Id"]);
+            ElemActivo.Empresa = dt.Rows[0]["Empresa"].ToString();
+            ElemActivo.IdDepartamento = Convert.ToInt32(dt.Rows[0]["IdDepartamento"]);
+            ElemActivo.IdArticulo= Convert.ToInt32(dt.Rows[0]["IdArticulo"]);
+            ElemActivo.IdUbicacion = Convert.ToInt32(dt.Rows[0]["IdUbicacion"]);
+            ElemActivo.Marca = dt.Rows[0]["Marca"].ToString();
+            ElemActivo.ModeloVersion = dt.Rows[0]["Modelo"].ToString();
+            ElemActivo.ProcesadorSim = dt.Rows[0]["Procesador"].ToString();
+            ElemActivo.DiscoDuroPlan = dt.Rows[0]["DiscoDuro"].ToString();
+            ElemActivo.RamLinea = dt.Rows[0]["Ram"].ToString();
+            ElemActivo.SerieImei = dt.Rows[0]["NumeroSerie"].ToString();
+            ElemActivo.Observaciones = dt.Rows[0]["Descripcion"].ToString();
+            
             return ActivoFinal;
         }
                      

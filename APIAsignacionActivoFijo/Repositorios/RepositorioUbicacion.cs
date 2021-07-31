@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -11,26 +13,59 @@ namespace APIAsignacionActivoFijo.Repositorios
     public class RepositorioUbicacion : IRepositorioUbicacion
     {
 
-        
+        SqlConnection conexion = new SqlConnection("Data Source =.; initial catalog = Asignacion_Equipos; User ID = user_asig_eq; Password=asigeq2507;");
 
-        public async Task<KeyValuePair<bool, string>> ActualizarUbicaciones(int UbicacionId, bool Estatus)
+        public KeyValuePair<bool, string> ActualizarUbicaciones(int UbicacionId, bool Estatus)
         {
             try
             {
 
-                ACTIVOS_FIJOS.Datos Data = new ACTIVOS_FIJOS.Datos();
+                string CadSP = "dbo.[SP_ACTUALIZAR_UBICACIONES]";
 
-                var Respuesta = Data.EditarUbicacion(UbicacionId, Estatus);
+                SqlCommand cmd = new SqlCommand(CadSP, conexion);
+
+
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@UbicacionId", UbicacionId);
+                cmd.Parameters.AddWithValue("@Estatus", Estatus);
+               
+
+                conexion.Open();
+                cmd.ExecuteNonQuery();
+                conexion.Close();
+
+                return new KeyValuePair<bool, string>(true, "Operación Exitosa");
+
+            }
+            catch (Exception e)
+            {
+                return new KeyValuePair<bool, string>(false, e.Message);
+            }
+
+        }
+
+        public KeyValuePair<bool, string> GuardarUbicacion(Ubicacion NuevaUbicacion)
+        {
+            try
+            {
+
+                string CadSP = "dbo.[SP_GUARDAR_UBICACION]";
+
+                SqlCommand cmd = new SqlCommand(CadSP, conexion);
+
+
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@IdManicipio", NuevaUbicacion.IdMunicipio);
+                cmd.Parameters.AddWithValue("@Sucursal", NuevaUbicacion.Nombre);
+               
                 
-                if (Respuesta.Bandera == 1)
-                {
-                    return new KeyValuePair<bool, string>(true, "Operacion Exitosa");
-                }
-                else
-                {
-                    return new KeyValuePair<bool, string>(true, Respuesta.Mensaje);
-                }
+                conexion.Open();
+                cmd.ExecuteNonQuery();
+                conexion.Close();
 
+                return new KeyValuePair<bool, string>(true, "Operación Exitosa");
 
             }
             catch (Exception e)
@@ -39,96 +74,63 @@ namespace APIAsignacionActivoFijo.Repositorios
             }
         }
 
-        public async Task<KeyValuePair<bool, string>> GuardarUbicacion(Ubicacion NuevaUbicacion)
+        public List<Ubicacion> ObtenerUbicaciones()
         {
-            try
+
+
+            List<Ubicacion> ListaFinal = new List<Ubicacion>();
+
+
+            string CadSP = "[dbo].[SP_OBTENER_UBICACIONES]";
+            SqlCommand cmd = new SqlCommand(CadSP, conexion);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+
+            for (int i = 0; i < dt.Rows.Count; i++)
             {
+                Ubicacion ElemUbicacion = new Ubicacion();
 
-                ACTIVOS_FIJOS.Datos Data = new ACTIVOS_FIJOS.Datos();
+                ElemUbicacion.Id = Convert.ToInt32(dt.Rows[i]["Id"]);
+                ElemUbicacion.IdMunicipio = Convert.ToInt32(dt.Rows[i]["IdMunicipio"]); ;
+                ElemUbicacion.Nombre = dt.Rows[i]["Sucursal"].ToString();
+                ElemUbicacion.Estatus = Convert.ToBoolean(dt.Rows[i]["Visible"]);                
 
-                var Respuesta = Data.GuardarUbicacion(NuevaUbicacion.IdMunicipio, NuevaUbicacion.Nombre);
-                
-                if (Respuesta.Bandera == 1)
-                {
-                    return new KeyValuePair<bool, string>(true, "Operacion Exitosa");
-                }
-                else
-                {
-                    return new KeyValuePair<bool, string>(true, Respuesta.Mensaje);
-                }
-                
+                ListaFinal.Add(ElemUbicacion);
 
             }
-            catch (Exception e)
-            {
-                return new KeyValuePair<bool, string>(false, e.Message);
-            }
-        }
-
-        public async Task<List<Ubicacion>> ObtenerUbicaciones()
-        {
-            
-
-            List<Ubicacion> ListaFinal = new List<Ubicacion>();         
-
-            ACTIVOS_FIJOS.Datos respuesta = new ACTIVOS_FIJOS.Datos();
-
-            var ListaRespuesta = respuesta.ObtenerUbicacion();
-
-            foreach (var i in ListaRespuesta)
-            {
-                ListaFinal.Add(new Ubicacion() 
-                {
-                    Id = Convert.ToInt32(i.UbicacionID), 
-                    Nombre = i.Sucursal, 
-                    Estatus = i.Visible, 
-                    NombreEstado = i.Estado, 
-                    NombreMunicipio=i.Municipio, 
-                    IdMunicipio = Convert.ToInt32(i.MunicipioID) 
-                });
-            }
-
-
-
-
-            //ListaFinal.Add(new Ubicacion() { Id = 1, Nombre = "E.GUADALUPE", Estatus = true, IdMunicipio = 1, NombreEstado = "PUEBLA", NombreMunicipio = "SAN ANDRES CHOLULA" });
-            //ListaFinal.Add(new Ubicacion() { Id = 2, Nombre = "E.PIRAMIDE", Estatus = true, IdMunicipio = 1, NombreEstado = "PUEBLA", NombreMunicipio = "SAN ANDRES CHOLULA" });
-            //ListaFinal.Add(new Ubicacion() { Id = 3, Nombre = "E.REFORMA", Estatus = true, IdMunicipio = 1, NombreEstado = "PUEBLA", NombreMunicipio = "PUEBLA" });
-            //ListaFinal.Add(new Ubicacion() { Id = 4, Nombre = "P.SUR", Estatus = true, IdMunicipio = 1, NombreEstado = "PUEBLA", NombreMunicipio = "PUEBLA" });
-            //ListaFinal.Add(new Ubicacion() { Id = 5, Nombre = "P.AMERICA", Estatus = true, IdMunicipio = 1, NombreEstado = "PUEBLA", NombreMunicipio = "PUEBLA" });
 
             return ListaFinal;
         }
 
-        public async Task<List<Ubicacion>> ObtenerUbicacionesActivas()
+        public List<Ubicacion> ObtenerUbicacionesActivas()
         {
 
             List<Ubicacion> ListaFinal = new List<Ubicacion>();
 
-            ACTIVOS_FIJOS.Datos respuesta = new ACTIVOS_FIJOS.Datos();
 
-            var ListaRespuesta = respuesta.ObtenerUbicacionesActivas();
+            string CadSP = "[dbo].[SP_OBTENER_UBICACIONES_ACTIVAS]";
+            SqlCommand cmd = new SqlCommand(CadSP, conexion);
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            foreach (var i in ListaRespuesta)
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+
+            for (int i = 0; i < dt.Rows.Count; i++)
             {
-                ListaFinal.Add(new Ubicacion()
-                {
-                    Id = Convert.ToInt32(i.UbicacionID),
-                    Nombre = i.Sucursal,
-                    Estatus = i.Visible,
-                    NombreEstado = i.Estado,
-                    NombreMunicipio = i.Municipio,
-                    IdMunicipio = Convert.ToInt32(i.MunicipioID)
-                });
+                Ubicacion ElemUbicacion = new Ubicacion();
+
+                ElemUbicacion.Id = Convert.ToInt32(dt.Rows[i]["Id"]);
+                ElemUbicacion.IdMunicipio = Convert.ToInt32(dt.Rows[i]["IdMunicipio"]); ;
+                ElemUbicacion.Nombre = dt.Rows[i]["Sucursal"].ToString();
+                ElemUbicacion.Estatus = Convert.ToBoolean(dt.Rows[i]["Visible"]);
+
+                ListaFinal.Add(ElemUbicacion);
+
             }
-
-
-
-            //List<Ubicacion> ListaFinal = new List<Ubicacion>();
-            //ListaFinal.Add(new Ubicacion() { Id = 1, Nombre = "E.GUADALUPE", Estatus = true, IdMunicipio = 1, NombreEstado = "PUEBLA", NombreMunicipio = "SAN ANDRES CHOLULA" });
-            //ListaFinal.Add(new Ubicacion() { Id = 2, Nombre = "E.PIRAMIDE", Estatus = true, IdMunicipio = 1, NombreEstado = "PUEBLA", NombreMunicipio = "SAN ANDRES CHOLULA" });
-            //ListaFinal.Add(new Ubicacion() { Id = 3, Nombre = "E.REFORMA", Estatus = true, IdMunicipio = 1, NombreEstado = "PUEBLA", NombreMunicipio = "PUEBLA" });           
-            //ListaFinal.Add(new Ubicacion() { Id = 5, Nombre = "P.AMERICA", Estatus = true, IdMunicipio = 1, NombreEstado = "PUEBLA", NombreMunicipio = "PUEBLA" });
 
             return ListaFinal;
         }

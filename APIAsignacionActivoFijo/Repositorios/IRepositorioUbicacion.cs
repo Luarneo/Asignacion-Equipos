@@ -9,9 +9,9 @@ namespace APIAsignacionActivoFijo.Repositorios
 {
     public interface IRepositorioUbicacion
     {
-        Task<List<Ubicacion>> ObtenerUbicaciones();
-        Task<KeyValuePair<bool, string>> GuardarUbicacion(Ubicacion NuevaUbicacion);
-        Task<KeyValuePair<bool, string>> ActualizarUbicaciones(int UbicacionId, bool Estatus);
-        Task<List<Ubicacion>> ObtenerUbicacionesActivas();
+        List<Ubicacion> ObtenerUbicaciones();
+        KeyValuePair<bool, string> GuardarUbicacion(Ubicacion NuevaUbicacion);
+        KeyValuePair<bool, string> ActualizarUbicaciones(int UbicacionId, bool Estatus);
+        List<Ubicacion> ObtenerUbicacionesActivas();
     }
 }

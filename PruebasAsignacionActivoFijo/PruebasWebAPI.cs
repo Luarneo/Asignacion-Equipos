@@ -172,7 +172,7 @@ namespace PruebasAsignacionActivoFijo
         [TestMethod]
         public async Task ObtenerActivoFiltradoPorEmpresaUbicacion()
         {
-            HttpResponseMessage respuesta = await _ArticuloController.GetActivo("ECONTACT", 1);
+            HttpResponseMessage respuesta = await _ArticuloController.GetActivo("SERVICIOS INTEGRALES S.A", 1);
             List<Activo> respuestacontenido = await respuesta.Content.ReadAsAsync<List<Activo>>();
             Assert.AreEqual(2, respuestacontenido[1].IdActivo);
 
@@ -185,7 +185,7 @@ namespace PruebasAsignacionActivoFijo
             Activo NuevoActivo = new Activo()
             {
 
-                Empresa = "ECONTACT",
+                Empresa = "SERVICIOS INTEGRALES S.A",
                 IdArea = 2,
                 IdDepartamento = 1,
                 IdUbicacion = 1,

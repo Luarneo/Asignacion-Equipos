@@ -9,6 +9,6 @@ namespace APIAsignacionActivoFijo.Repositorios
 {
     public interface IRepositorioAsignacion
     {
-        Task<KeyValuePair<bool, string>> GuardarActualizarAsignacion(Asignacion asignacion);
+        KeyValuePair<bool, string> GuardarActualizarAsignacion(Asignacion asignacion);
     }
 }

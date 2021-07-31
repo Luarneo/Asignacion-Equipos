@@ -108,7 +108,7 @@ namespace PruebasAsignacionActivoFijo
         [TestMethod]
         public async Task ObtenerActivosPorEmpresaUbicacion()
         {
-            var resultado = await _ServicioActivo.ObtenerActivosEmpresaUbicac("ECONTACT",2) as IEnumerable<ActivoViewModel>;
+            var resultado = await _ServicioActivo.ObtenerActivosEmpresaUbicac("SERVICIOS INTEGRALES S.A",2) as IEnumerable<ActivoViewModel>;
             Assert.AreEqual(2, resultado.Count());
         }
 
@@ -124,7 +124,7 @@ namespace PruebasAsignacionActivoFijo
         {
             var resultado = await _ServicioActivo.GuardarActivo(new ActivoViewModel
             {
-                Empresa = "ECONTACT",
+                Empresa = "SERVICIOS INTERALES S.A",
                 IdArea = 2,
                 IdDepartamento = 1,
                 IdUbicacion = 2,

@@ -28,11 +28,11 @@ function ValidarListaActivos() {
        
 
     if (EmpresaSeleccionada == 1) {
-        EmpresaSeleccionada = "ECONTACT"
+        EmpresaSeleccionada = "SERVICIOS INTEGRALES S.A"
     }
 
     if (EmpresaSeleccionada == 2) {
-        EmpresaSeleccionada = "SERVINEXT"
+        EmpresaSeleccionada = "NEOTEC"
     }
 
     var UbicacionSeleccionada = $("#SelectUbicacion").val();

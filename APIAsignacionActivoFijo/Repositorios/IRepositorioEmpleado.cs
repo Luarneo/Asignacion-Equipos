@@ -9,7 +9,7 @@ namespace APIAsignacionActivoFijo.Repositorios
 {
     public interface IRepositorioEmpleado
     {
-        Task<Empleado> ObtenerEmpleado(string NumeroEmpleado);
-        Task<KeyValuePair<bool, string>> ActualizarEmpleado(Empleado empleado);
+        Empleado ObtenerEmpleado(string NumeroEmpleado);
+        KeyValuePair<bool, string> ActualizarEmpleado(Empleado empleado);
     }
 }

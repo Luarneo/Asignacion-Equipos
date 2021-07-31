@@ -31,12 +31,12 @@ namespace APIAsignacionActivoFijo.Controllers
 
 
         [HttpPost]
-        public async Task<HttpResponseMessage> PostActivo(Activo activo)
+        public HttpResponseMessage  PostActivo(Activo activo)
         {
             try
             {
              
-                KeyValuePair<bool, string> respuestaRepo = await _RepositorioActivo.GuardarActivo(activo);
+                KeyValuePair<bool, string> respuestaRepo = _RepositorioActivo.GuardarActivo(activo);
 
                 if (respuestaRepo.Key == true)
                 {
@@ -52,11 +52,11 @@ namespace APIAsignacionActivoFijo.Controllers
         }
 
         [HttpGet]
-        public async Task<HttpResponseMessage> GetActivo(string Empresa, long UbicacionId)
+        public HttpResponseMessage GetActivo(string Empresa, long UbicacionId)
         {
             try
             {
-                var ListaActivos = await _RepositorioActivo.ObtenerActivos(Empresa, UbicacionId);
+                var ListaActivos = _RepositorioActivo.ObtenerActivos(Empresa, UbicacionId);
 
                 if (ListaActivos.Any())
                 {
@@ -75,11 +75,11 @@ namespace APIAsignacionActivoFijo.Controllers
         }
 
         [HttpGet]
-        public async Task<HttpResponseMessage> GetActivo(int ActivoID)
+        public HttpResponseMessage GetActivo(int ActivoID)
         {
             try
             {
-                var ListaActivos = await _RepositorioActivo.ObtenerActivo(ActivoID);
+                var ListaActivos = _RepositorioActivo.ObtenerActivo(ActivoID);
 
                 if (ListaActivos != null)
                 {
@@ -99,11 +99,11 @@ namespace APIAsignacionActivoFijo.Controllers
 
         [HttpPost]
         [Route("api/Asignacion")]
-        public async Task<HttpResponseMessage> PostAsignacion(Asignacion asignacion)
+        public HttpResponseMessage PostAsignacion(Asignacion asignacion)
         {
             try
             {
-                KeyValuePair<bool, string> respuestaRepo = await _RepositorioAsignacion.GuardarActualizarAsignacion(asignacion);
+                KeyValuePair<bool, string> respuestaRepo = _RepositorioAsignacion.GuardarActualizarAsignacion(asignacion);
 
                 if (respuestaRepo.Key == true)
                 {

@@ -22,11 +22,11 @@ namespace APIAsignacionActivoFijo.Controllers
 
        
         [HttpPost]
-        public async Task<HttpResponseMessage> PostComponente(Componente componente)
+        public HttpResponseMessage PostComponente(Componente componente)
         {
             try
             {
-                KeyValuePair<bool, string> respuestaRepo = await _Repositorio.GuardarComponente(componente);
+                KeyValuePair<bool, string> respuestaRepo = _Repositorio.GuardarComponente(componente);
 
                 if (respuestaRepo.Key==true)
                 {
@@ -42,12 +42,12 @@ namespace APIAsignacionActivoFijo.Controllers
         }
 
         [HttpGet]
-        public async Task<HttpResponseMessage> GetComponente(int ActivoID)
+        public HttpResponseMessage GetComponente(int ActivoID)
         {
 
             try
             {
-                var ListaComponentes = await _Repositorio.ObtenerComponentes(ActivoID);
+                var ListaComponentes = _Repositorio.ObtenerComponentes(ActivoID);
 
                 if (ListaComponentes.Any())
                 {

@@ -28,13 +28,13 @@ namespace FrontAsignacionActivoFijo.Controllers
 
 
         // GET: Activo/Create
-        [Authorize]
+       
         public async Task<ActionResult> NuevoActivo()
         {
 
             List<CatalogosViewModel> ListaEmpresas = new List<CatalogosViewModel>();
-            ListaEmpresas.Add(new CatalogosViewModel() { Id = 1, Nombre = "ECONTACT" });
-            ListaEmpresas.Add(new CatalogosViewModel() { Id = 2, Nombre = "SERVINEXT" });
+            ListaEmpresas.Add(new CatalogosViewModel() { Id = 1, Nombre = "SERVICIOS INTEGRALES S.A" });
+            ListaEmpresas.Add(new CatalogosViewModel() { Id = 2, Nombre = "NEOTEC" });
 
             List<CatalogosViewModel> ListaDepartamentos = new List<CatalogosViewModel>();
 

@@ -25,7 +25,7 @@ namespace FrontAsignacionActivoFijo.Controllers
         }
 
         // GET: Ubicaciones
-        [Authorize]
+   
         public async Task<ActionResult>  Index()
         {
 

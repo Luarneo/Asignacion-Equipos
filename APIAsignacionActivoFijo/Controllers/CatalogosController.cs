@@ -21,7 +21,7 @@ namespace APIAsignacionActivoFijo.Controllers
 
         
         [HttpGet]
-        public async Task<HttpResponseMessage> GetObtenerCatalogos( int filtro)
+        public HttpResponseMessage GetObtenerCatalogos( int filtro)
         {
 
             try
@@ -30,22 +30,22 @@ namespace APIAsignacionActivoFijo.Controllers
 
                 if (filtro == 1)
                 {
-                    ListaFinal = await _Repositorio.ObtenerEstados();
+                    ListaFinal = _Repositorio.ObtenerEstados();
                 }
 
                 if (filtro == 2)
                 {
-                    ListaFinal = await _Repositorio.ObtenerAreas();
+                    ListaFinal = _Repositorio.ObtenerAreas();
                 }
 
                 if (filtro == 3)
                 {
-                    ListaFinal = await _Repositorio.ObtenerClasificacion();
+                    ListaFinal =  _Repositorio.ObtenerClasificacion();
                 }
 
                 if (filtro == 4)
                 {
-                    ListaFinal = await _Repositorio.ObtenerEstatus();
+                    ListaFinal =  _Repositorio.ObtenerEstatus();
                 }
 
                 
@@ -66,11 +66,11 @@ namespace APIAsignacionActivoFijo.Controllers
         }
 
         [HttpGet]
-        public async Task<HttpResponseMessage> GetObtenerMunicipios(int EstadoId)
+        public HttpResponseMessage GetObtenerMunicipios(int EstadoId)
         {
             try
             {
-                var ListaFinal = await _Repositorio.ObtenerMunicipios(EstadoId);
+                var ListaFinal = _Repositorio.ObtenerMunicipios(EstadoId);
 
                 if (ListaFinal.Any())
                 {
@@ -90,11 +90,11 @@ namespace APIAsignacionActivoFijo.Controllers
         }
         
         [HttpGet]
-        public async Task<HttpResponseMessage> GetObtenerDepartamentos(int AreaId)
+        public HttpResponseMessage GetObtenerDepartamentos(int AreaId)
         {
             try
             {
-                var ListaFinal = await _Repositorio.ObtenerDepartamento(AreaId);
+                var ListaFinal = _Repositorio.ObtenerDepartamento(AreaId);
 
                 if (ListaFinal.Any())
                 {
@@ -114,11 +114,11 @@ namespace APIAsignacionActivoFijo.Controllers
         }
 
         [HttpGet]
-        public async Task<HttpResponseMessage> GetObtenerArticulos(int ClasificacionId)
+        public HttpResponseMessage GetObtenerArticulos(int ClasificacionId)
         {
             try
             {
-                var ListaFinal = await _Repositorio.ObtenerArticulo(ClasificacionId);
+                var ListaFinal = _Repositorio.ObtenerArticulo(ClasificacionId);
 
                 if (ListaFinal.Any())
                 {

@@ -24,7 +24,7 @@ namespace APIAsignacionActivoFijo.Controllers
         
        
         [HttpGet]
-        public async Task<HttpResponseMessage> GetUbicacion(int Filtro) 
+        public HttpResponseMessage GetUbicacion(int Filtro) 
         {
 
             try
@@ -35,14 +35,14 @@ namespace APIAsignacionActivoFijo.Controllers
                 //Todas las Ubicaciones  
                 if (Filtro == 1)
                 {
-                    ListaUbicaciones = await _Repositorio.ObtenerUbicaciones();
+                    ListaUbicaciones = _Repositorio.ObtenerUbicaciones();
                     
                 }
 
                 //Solo Ubicaciones activas    
                 else if (Filtro == 2)
                 {
-                    ListaUbicaciones = await _Repositorio.ObtenerUbicacionesActivas();
+                    ListaUbicaciones = _Repositorio.ObtenerUbicacionesActivas();
                 }
 
                 else
@@ -69,11 +69,11 @@ namespace APIAsignacionActivoFijo.Controllers
         
     
         [HttpPost]
-        public async Task<HttpResponseMessage> PostUbicacion (Ubicacion NuevaUbicacion) 
+        public HttpResponseMessage PostUbicacion (Ubicacion NuevaUbicacion) 
         {
             try
             {
-                KeyValuePair<bool, string> respuestaRepo = await _Repositorio.GuardarUbicacion(NuevaUbicacion);
+                KeyValuePair<bool, string> respuestaRepo = _Repositorio.GuardarUbicacion(NuevaUbicacion);
                 
                 if (respuestaRepo.Key==true)
                 {
@@ -89,11 +89,11 @@ namespace APIAsignacionActivoFijo.Controllers
         }
 
         [HttpPut]
-        public async Task<HttpResponseMessage> PutUbicacion(int IdUbicacion, bool Estatus) 
+        public HttpResponseMessage PutUbicacion(int IdUbicacion, bool Estatus) 
         {
             try
             {
-                KeyValuePair<bool, string> respuestaRepo = await _Repositorio.ActualizarUbicaciones(IdUbicacion, Estatus);
+                KeyValuePair<bool, string> respuestaRepo = _Repositorio.ActualizarUbicaciones(IdUbicacion, Estatus);
 
                 if (respuestaRepo.Key == true)
                 {

@@ -22,12 +22,12 @@ namespace APIAsignacionActivoFijo.Controllers
 
         
         [HttpGet]
-        public async Task<HttpResponseMessage> GetEmpleado(string NumeroEmpleado)
+        public HttpResponseMessage GetEmpleado(string NumeroEmpleado)
         {
 
             try
             {
-                var EmpleadoObtenido = await _Repositorio.ObtenerEmpleado(NumeroEmpleado);
+                var EmpleadoObtenido = _Repositorio.ObtenerEmpleado(NumeroEmpleado);
 
                 if (EmpleadoObtenido != null)
                 {
@@ -46,12 +46,12 @@ namespace APIAsignacionActivoFijo.Controllers
         }
 
         [HttpPut]
-        public async Task<HttpResponseMessage> PutEmpleado(Empleado empleado)
+        public HttpResponseMessage PutEmpleado(Empleado empleado)
         {
 
             try
             {
-                var RespuestaRepo = await _Repositorio.ActualizarEmpleado(empleado);
+                var RespuestaRepo = _Repositorio.ActualizarEmpleado(empleado);
 
                 if (RespuestaRepo.Key == true)
                 {

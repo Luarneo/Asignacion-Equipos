@@ -9,7 +9,7 @@ namespace APIAsignacionActivoFijo.Repositorios
 {
     public interface IRepositorioComponente
     {
-        Task<KeyValuePair<bool, string>> GuardarComponente(Componente ListaComponentes);
-        Task<List<Componente>> ObtenerComponentes(int ActivoID);
+        KeyValuePair<bool, string> GuardarComponente(Componente ListaComponentes);
+        List<Componente> ObtenerComponentes(int ActivoID);
     }
 }

@@ -9,9 +9,9 @@ namespace APIAsignacionActivoFijo.Repositorios
 {
     public interface IRepositorioActivo
     {
-        Task<List<ActivoVista>> ObtenerActivos(string Empresa, long UbicacionId);
-        Task <KeyValuePair<bool,string>> GuardarActivo(Activo NuevoActivo);
-        Task<ActivoVista> ObtenerActivo(int ActivoID);   
+        List<ActivoVista> ObtenerActivos(string Empresa, long UbicacionId);
+        KeyValuePair<bool,string> GuardarActivo(Activo NuevoActivo);
+        ActivoVista ObtenerActivo(int ActivoID);   
              
     }
 }

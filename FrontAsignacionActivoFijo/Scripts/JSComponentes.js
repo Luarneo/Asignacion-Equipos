@@ -21,11 +21,12 @@ function ValidarListaActivos() {
     var EmpresaSeleccionada = $("#SelectEmpresa").val();
 
     if (EmpresaSeleccionada == 1) {
-        EmpresaSeleccionada = "ECONTACT"
+        EmpresaSeleccionada = "
+        "
     }
 
     if (EmpresaSeleccionada == 2) {
-        EmpresaSeleccionada = "SERVINEXT"
+        EmpresaSeleccionada = "NEOTEC"
     }
 
     var UbicacionSeleccionada = $("#SelectUbicacion").val();
